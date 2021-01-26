@@ -14,5 +14,11 @@ namespace WaveSynMobile
         {
             InitializeComponent();
         }
+
+        async private void OnScanClicked(object sender, EventArgs e)
+        {
+            var scanPage = new Pages.BarcodeScanPage();
+            await this.Navigation.PushAsync(scanPage);
+        }
     }
 }

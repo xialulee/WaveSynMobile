@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveSynMobile.Android", "WaveSynMobile\WaveSynMobile.Android\WaveSynMobile.Android.csproj", "{17FF2CE4-18F8-41D7-BF0F-79C48C5A8D91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveSynMobile", "WaveSynMobile\WaveSynMobile\WaveSynMobile.csproj", "{C11FD3EF-3C77-4DF5-9BDA-674B7A99F604}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17FF2CE4-18F8-41D7-BF0F-79C48C5A8D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17FF2CE4-18F8-41D7-BF0F-79C48C5A8D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17FF2CE4-18F8-41D7-BF0F-79C48C5A8D91}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{17FF2CE4-18F8-41D7-BF0F-79C48C5A8D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17FF2CE4-18F8-41D7-BF0F-79C48C5A8D91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17FF2CE4-18F8-41D7-BF0F-79C48C5A8D91}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C11FD3EF-3C77-4DF5-9BDA-674B7A99F604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11FD3EF-3C77-4DF5-9BDA-674B7A99F604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11FD3EF-3C77-4DF5-9BDA-674B7A99F604}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C11FD3EF-3C77-4DF5-9BDA-674B7A99F604}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11FD3EF-3C77-4DF5-9BDA-674B7A99F604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C11FD3EF-3C77-4DF5-9BDA-674B7A99F604}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A84119D-14D7-41F9-ACDF-7AB1BFCD147E}
+	EndGlobalSection
+EndGlobal

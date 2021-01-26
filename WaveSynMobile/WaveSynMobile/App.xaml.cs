@@ -10,7 +10,9 @@ namespace WaveSynMobile
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            var homePage = new HomePage();
+            var navPage = new NavigationPage(homePage);
+            this.MainPage = navPage;
         }
 
         protected override void OnStart()

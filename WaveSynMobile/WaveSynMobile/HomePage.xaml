@@ -20,6 +20,7 @@
             </Label.FormattedText>
         </Label>
         <Button Text="Scan" Clicked="OnScanClicked"/>
+        <Button Text="Parse" Clicked="Button_Clicked"/>
     </StackLayout>
 
 </ContentPage>

@@ -36,15 +36,6 @@ namespace WaveSynMobile.Utils
 
         public void SendHead()
         {
-            const int devInfoLen = 32;
-            var devInfo = $"{DeviceInfo.Manufacturer} {DeviceInfo.Model}";
-            var devInfoArr = new byte[devInfoLen];
-            for (int i=0; i<Math.Min(devInfoLen, devInfo.Length); ++i)
-            {
-                devInfoArr[i] = (byte)devInfo[i];
-            }
-
-
             var passwordArr = this.Int32ToBytes(this.password);
 
             // Send exit flag
@@ -54,7 +45,11 @@ namespace WaveSynMobile.Utils
             this.socket.Send(passwordArr);
 
             // Send device info
-            this.socket.Send(devInfoArr);
+            this.SendJson(new DeviceInfoJson()
+            {
+                Manufacturer = DeviceInfo.Manufacturer,
+                Model = DeviceInfo.Model
+            });
         }
 
 
@@ -64,6 +59,14 @@ namespace WaveSynMobile.Utils
             textJson.Data = text;
             var jsonBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize<TextJson>(textJson));
             this.SendBytes(jsonBytes);
+        }
+
+
+        public void SendJson<T>(T obj)
+        {
+            var jsonStr = JsonSerializer.Serialize<T>(obj);
+            var jsonUTF8 = Encoding.UTF8.GetBytes(jsonStr);
+            this.SendBytes(jsonUTF8);
         }
 
 

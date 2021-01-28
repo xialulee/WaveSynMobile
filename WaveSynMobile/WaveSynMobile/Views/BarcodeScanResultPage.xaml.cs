@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 
 using WaveSynMobile.Utils;
 
-namespace WaveSynMobile.Pages
+namespace WaveSynMobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BarcodeScanResultPage : ContentPage

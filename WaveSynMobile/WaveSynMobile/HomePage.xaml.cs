@@ -19,7 +19,7 @@ namespace WaveSynMobile
 
         async private void OnScanClicked(object sender, EventArgs e)
         {
-            var scanPage = new Pages.BarcodeScanPage();
+            var scanPage = new Views.BarcodeScanPage();
             await this.Navigation.PushAsync(scanPage);
         }
 

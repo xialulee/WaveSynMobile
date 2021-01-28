@@ -25,10 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Pages\BarcodeScanPage.xaml">
+    <EmbeddedResource Update="Views\BarcodeScanPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\BarcodeScanResultPage.xaml">
+    <EmbeddedResource Update="Views\BarcodeScanResultPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

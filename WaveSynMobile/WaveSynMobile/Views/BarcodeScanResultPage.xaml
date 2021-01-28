@@ -5,7 +5,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label x:Name="StatusLabel"
-                Text=""
+                Text="{Binding StatusHTML}"
                 TextType="Html"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />

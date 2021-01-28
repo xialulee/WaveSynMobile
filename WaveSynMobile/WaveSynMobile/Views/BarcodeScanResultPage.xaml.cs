@@ -14,9 +14,7 @@ namespace WaveSynMobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BarcodeScanResultPage : ContentPage
-    {
-        private readonly WaveSynBarcode barcode = null;
-        
+    {   
         public BarcodeScanResultPage()
         {
             InitializeComponent();
@@ -25,41 +23,10 @@ namespace WaveSynMobile.Views
         public BarcodeScanResultPage(WaveSynBarcode barcode)
         {
             InitializeComponent();
-            this.barcode = barcode;
-            Console.WriteLine("----------------------------------");
-            Console.WriteLine(barcode.Ip);
-            Console.WriteLine(barcode.Port);
-            this.Communicate();
-        }
-
-        async private void Communicate() 
-        {
-            using (var communicator = new Communicator(this.barcode.Ip, this.barcode.Port, this.barcode.Password))
-            {
-                var clipbText = await Clipboard.GetTextAsync();
-                var statusLabel = this.FindByName<Label>("StatusLabel");
-                statusLabel.Text = "Sending...";
-                var success = true;
-                try
-                {
-                    await Task.Run(() =>
-                    {
-                        communicator.Connect();
-                        communicator.SendHead();
-                        communicator.SendText(clipbText);
-                    });
-                }
-                catch (System.Net.Sockets.SocketException ex)
-                {
-                    success = false;
-                    statusLabel.Text = $"<p style=\"color:red\">{ex.Message}</p>";
-                }
-
-                if (success) 
-                {
-                    statusLabel.Text = "<p style=\"color:green\">Finished.</p>";
-                }
-            }
+         
+            var viewModel = new ViewModels.BarcodeScanResultViewModel(barcode.Ip, barcode.Port, barcode.Password);
+            this.BindingContext = viewModel;
+            viewModel.Communicate();            
         }
     }
 }

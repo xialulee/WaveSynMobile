@@ -14,6 +14,15 @@ namespace WaveSynMobile.Utils
         public string Source { get; set; }
     }
 
+    public class AESInfo
+    {
+        [JsonPropertyName("key")]
+        public string Key { get; set; }
+
+        [JsonPropertyName("iv")]
+        public string IV { get; set; }
+    }
+
     public class WaveSynBarcode
     {
         [JsonPropertyName("ip")]
@@ -24,6 +33,9 @@ namespace WaveSynMobile.Utils
 
         [JsonPropertyName("password")]
         public int Password { get; set; }
+
+        [JsonPropertyName("aes")]
+        public AESInfo AES { get; set; }
 
         [JsonPropertyName("command")]
         public WaveSynCommand Command { get; set; }

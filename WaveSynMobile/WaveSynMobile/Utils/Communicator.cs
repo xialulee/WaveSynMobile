@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 
 using Xamarin.Essentials;
 
@@ -11,18 +13,22 @@ namespace WaveSynMobile.Utils
 {
     class Communicator : IDisposable
     {
-        private string ip;
-        private int port;
-        private int password;
+        private readonly string ip;
+        private readonly int port;
+        private readonly int password;
+        private readonly byte[] key;
+        private readonly byte[] iv;
         private readonly Socket socket;
         private readonly IPEndPoint ipe;
 
 
-        public Communicator(string ip, int port, int password) 
+        public Communicator(string ip, int port, int password, byte[] key, byte[] iv) 
         {
             this.ip = ip;
             this.port = port;
             this.password = password;
+            this.key = key;
+            this.iv = iv;
             this.ipe = new IPEndPoint(IPAddress.Parse(ip), port);
             this.socket = new Socket(this.ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
@@ -31,6 +37,43 @@ namespace WaveSynMobile.Utils
         public void Connect()
         {
             this.socket.Connect(this.ipe);
+        }
+
+
+        private byte[] MakeEncryptedInfo()
+        {
+            var info = new DeviceInfoJson()
+            {
+                Manufacturer = DeviceInfo.Manufacturer,
+                Model = DeviceInfo.Model
+            };
+            var jsonStr = JsonSerializer.Serialize(info);
+            return encrypt(jsonStr);
+        }
+
+
+        private byte[] encrypt(string text)
+        {
+            var textBytes = Encoding.UTF8.GetBytes(text);
+
+            using Aes aes = Aes.Create();
+            aes.Mode = CipherMode.CBC;
+            aes.Key = this.key;
+            aes.IV = this.iv;
+            aes.Padding = PaddingMode.PKCS7;
+
+            using var outStream = new MemoryStream();
+
+            {
+                using var cryptStream = new CryptoStream(
+                                            outStream,
+                                            aes.CreateEncryptor(),
+                                            CryptoStreamMode.Write);
+                using var bWriter = new BinaryWriter(cryptStream);
+                bWriter.Write(textBytes);
+            }
+                
+            return outStream.ToArray();
         }
 
 
@@ -55,10 +98,29 @@ namespace WaveSynMobile.Utils
 
         public void SendText(string text)
         {
+            /*
             var textJson = new TextJson();
             textJson.Data = text;
             var jsonBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize<TextJson>(textJson));
             this.SendBytes(jsonBytes);
+            */
+            var encryptedInfo = MakeEncryptedInfo();
+            var encryptedText = encrypt(text);
+            var headObj = new Utils.DataHead()
+            {
+                Password = (uint)this.password,
+                InfoLen = (UInt64)encryptedInfo.Length,
+                DataLen = (UInt64)encryptedText.Length
+            };
+
+            // Send exit flag
+            this.socket.Send(new byte[1]);
+            // Send head
+            SendJson(headObj);
+            // Send info
+            this.socket.Send(encryptedInfo);
+            // Send data
+            this.socket.Send(encryptedText);
         }
 
 
@@ -70,7 +132,7 @@ namespace WaveSynMobile.Utils
         }
 
 
-        public void SendBytes(byte[] byteArr)
+        private void SendBytes(byte[] byteArr)
         {
             var length = byteArr.Length;
             this.socket.Send(this.Int32ToBytes(length));

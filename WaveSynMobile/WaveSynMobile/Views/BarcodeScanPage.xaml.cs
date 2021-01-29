@@ -24,11 +24,19 @@ namespace WaveSynMobile.Views
         {
             if (Scanning)
             {
-                Scanning = false;
+                
                 Device.BeginInvokeOnMainThread(async () =>
                 {
-                    //Console.WriteLine(result.Text);
-                    var barcode = JsonSerializer.Deserialize<Utils.WaveSynBarcode>(result.Text);
+                    Utils.WaveSynBarcode barcode;
+                    try
+                    {
+                        barcode = JsonSerializer.Deserialize<Utils.WaveSynBarcode>(result.Text);
+                    }
+                    catch (JsonException ex) 
+                    {
+                        return;
+                    }
+                    Scanning = false;
                     var resultPage = new Views.BarcodeScanResultPage(barcode);
                     await this.Navigation.PushAsync(resultPage);
                     this.Navigation.RemovePage(this);

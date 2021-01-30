@@ -68,29 +68,22 @@ namespace WaveSynMobile.Utils
 
         private void Encrypt(Stream outStream, Stream inStream, int bufLen=65536)
         {
-            // var textBytes = Encoding.UTF8.GetBytes(text);
             var buf = new byte[bufLen];
 
             using var aes = MakeAES();
+            using var cryptStream = new CryptoStream(
+                                    outStream,
+                                    aes.CreateEncryptor(),
+                                    CryptoStreamMode.Write);
+            using var bWriter = new BinaryWriter(cryptStream);
 
-            // using var outStream = new MemoryStream();
-
-            {
-                using var cryptStream = new CryptoStream(
-                                        outStream,
-                                        aes.CreateEncryptor(),
-                                        CryptoStreamMode.Write);
-                using var bWriter = new BinaryWriter(cryptStream);
-                var readCnt = 0;
-                do
-                {                   
-                    readCnt = inStream.Read(buf, 0, bufLen);
-                    bWriter.Write(buf, 0, readCnt);
-                }
-                while (readCnt > 0);
+            int readCnt;
+            do
+            {                   
+                readCnt = inStream.Read(buf, 0, bufLen);
+                bWriter.Write(buf, 0, readCnt);
             }
- 
-            // return outStream.ToArray();
+            while (readCnt > 0);
         }
 
 
@@ -168,7 +161,6 @@ namespace WaveSynMobile.Utils
             // Send info
             this.socket.Send(encryptedInfo);
             // Send stream
-            // using var aes = MakeAES();
             using var socketStream = new NetworkStream(this.socket);
             Encrypt(outStream: socketStream, inStream: stream);
         }

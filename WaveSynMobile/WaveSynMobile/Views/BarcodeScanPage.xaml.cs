@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -37,9 +38,20 @@ namespace WaveSynMobile.Views
                         return;
                     }
                     Scanning = false;
-                    var resultPage = new Views.BarcodeScanResultPage(barcode);
-                    await this.Navigation.PushAsync(resultPage);
-                    this.Navigation.RemovePage(this);
+
+                    switch (barcode.Command.Action, barcode.Command.Source)
+                    {
+                        case ("read", "clipboard"):
+                            var sendClipboardTextPage = new Views.SendClipboardTexttPage(barcode);
+                            await this.Navigation.PushAsync(sendClipboardTextPage);
+                            this.Navigation.RemovePage(this);
+                            break;
+                        case ("read", "storage"):
+                            var sendFilePage = new Views.SendFilePage(barcode);
+                            await this.Navigation.PushAsync(sendFilePage);
+                            this.Navigation.RemovePage(this);
+                            break;
+                    }
                 });
             }
         }

@@ -5,12 +5,15 @@ using System.Text.Json.Serialization;
 
 namespace WaveSynMobile.Utils
 {
-    class DeviceInfoJson
+    class DataInfoJson
     {
         [JsonPropertyName("manufacturer")]
         public string Manufacturer { get; set; }
 
         [JsonPropertyName("model")]
         public string Model { get; set; }
+
+        [JsonPropertyName("filename")]
+        public string FileName { get; set; }
     }
 }

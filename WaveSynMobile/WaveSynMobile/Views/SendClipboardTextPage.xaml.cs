@@ -13,20 +13,20 @@ using WaveSynMobile.Utils;
 namespace WaveSynMobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BarcodeScanResultPage : ContentPage
+    public partial class SendClipboardTexttPage : ContentPage
     {   
-        public BarcodeScanResultPage()
+        public SendClipboardTexttPage()
         {
             InitializeComponent();
         }
 
-        public BarcodeScanResultPage(WaveSynBarcode barcode)
+        public SendClipboardTexttPage(WaveSynBarcode barcode)
         {
             InitializeComponent();
 
             var key = System.Convert.FromBase64String(barcode.AES.Key);
             var iv = System.Convert.FromBase64String(barcode.AES.IV);
-            var viewModel = new ViewModels.BarcodeScanResultViewModel(barcode.Ip, barcode.Port, barcode.Password, key, iv);
+            var viewModel = new ViewModels.SendClipboardTextViewModel(barcode.Ip, barcode.Port, barcode.Password, key, iv);
             this.BindingContext = viewModel;
             viewModel.Communicate();            
         }

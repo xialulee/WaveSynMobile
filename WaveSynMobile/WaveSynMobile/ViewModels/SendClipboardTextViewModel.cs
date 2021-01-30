@@ -12,8 +12,9 @@ using WaveSynMobile.Utils;
 
 namespace WaveSynMobile.ViewModels
 {
-    class BarcodeScanResultViewModel : BaseViewModel
+    class SendClipboardTextViewModel : BaseSendViewModel
     {
+        /*
         private string ip;
         private int port;
         private int password;
@@ -27,13 +28,19 @@ namespace WaveSynMobile.ViewModels
             set => this.SetProperty(ref this.statusHTML, value);
         }
 
-        public BarcodeScanResultViewModel(string ip, int port, int password, byte[] key, byte[] iv)
+        public SendClipboardTextViewModel(string ip, int port, int password, byte[] key, byte[] iv)
         {
             this.ip = ip;
             this.port = port;
             this.password = password;
             this.key = key;
             this.iv = iv;
+        }
+        */
+
+
+        public SendClipboardTextViewModel(string ip, int port, int password, byte[] key, byte[] iv) : base(ip, port, password, key, iv)
+        {
         }
 
 
@@ -52,9 +59,6 @@ namespace WaveSynMobile.ViewModels
                     {
                         communicator.Connect();
                         communicator.SendText(clipbText);
-                        //var encText = encrypt(clipbText);
-                        // communicator.SendHead();
-                        //communicator.SendText(clipbText);
                     });
                 }
                 catch (System.Net.Sockets.SocketException ex)

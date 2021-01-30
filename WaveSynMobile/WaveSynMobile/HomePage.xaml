@@ -21,6 +21,7 @@
         </Label>
         <Button Text="Scan" Clicked="OnScanClicked"/>
         <Button Text="Parse" Clicked="Button_Clicked"/>
+        <Label x:Name="FileNameLabel" Text=""/>
     </StackLayout>
 
 </ContentPage>

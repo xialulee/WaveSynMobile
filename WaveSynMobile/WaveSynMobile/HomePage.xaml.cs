@@ -25,35 +25,37 @@ namespace WaveSynMobile
 
         
         //async private void Button_Clicked(object sender, EventArgs e)
-        private void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Clicked(object sender, EventArgs e)
         {
-            /*
-            var barcode = new Utils.WaveSynBarcode();
-            barcode.Ip = "192.168.100.2";
-            barcode.Port = 10000;
-            //barcode.Password = 42674;
+            await PickAndShow();
+        }
 
-            var command = new Utils.WaveSynCommand();
-            command.Action = "read";
-            command.Source = "clipboard";
-            barcode.Command = command;
-            var str = JsonSerializer.Serialize<Utils.WaveSynBarcode>(barcode);
-            Console.WriteLine(str);
-            */
-
-            /*
-            var clipbText = await Clipboard.GetTextAsync();
-            Console.WriteLine(clipbText);
-            */
-            const int devInfoLen = 32;
-            var devInfo = $"{DeviceInfo.Manufacturer} {DeviceInfo.Model}";
-            Console.WriteLine(devInfo);
-            /*var devInfoArr = new byte[devInfoLen];
-            for (int i=0; i<Math.Min(devInfoLen, devInfo.Count()); ++i)
+        async Task PickAndShow(PickOptions options=null)
+        {
+            try
             {
-                devInfoArr[i] = (byte)devInfo[i];
+                var result = await FilePicker.PickAsync();
+                if (result != null)
+                {
+                    Console.WriteLine($"File Name: {result.FileName}");
+                    var stream = await result.OpenReadAsync();
+                    var buf1 = new byte[16];
+                    var readCnt = stream.Read(buf1, 0, 16);
+                    var buf2 = new byte[16];
+                    var readCnt2 = stream.Read(buf2, 0, 16);
+                    Console.WriteLine(readCnt2);
+                    /*if (result.FileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
+                        result.FileName.EndsWith("png", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // var stream = await result.OpenReadAsync();
+                        // Image = ImageSource.FromStream(() => stream);
+                    }*/
+                }
             }
-            Console.WriteLine(devInfoArr);*/
+            catch (Exception ex)
+            {
+                // The user canceled or something went wrong
+            }
         }
     }
 }

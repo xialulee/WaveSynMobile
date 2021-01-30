@@ -32,9 +32,14 @@ namespace WaveSynMobile.Droid
             {
                 var uri = Intent.GetParcelableExtra(Intent.ExtraStream) as Android.Net.Uri;
                 var stream = ContentResolver.OpenInputStream(uri);
+                var navPage = app.MainPage as Xamarin.Forms.NavigationPage;
+                var homePage = navPage.RootPage as WaveSynMobile.HomePage;
+                var label = homePage.FindByName("FileNameLabel") as Xamarin.Forms.Label;
+                label.Text = "File";
                 Console.WriteLine($"The length of the stream is {stream.Length}");
             }
         }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);

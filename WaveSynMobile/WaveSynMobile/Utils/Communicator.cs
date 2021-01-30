@@ -40,40 +40,68 @@ namespace WaveSynMobile.Utils
         }
 
 
-        private byte[] MakeEncryptedInfo()
+        private Aes MakeAES()
         {
-            var info = new DeviceInfoJson()
-            {
-                Manufacturer = DeviceInfo.Manufacturer,
-                Model = DeviceInfo.Model
-            };
-            var jsonStr = JsonSerializer.Serialize(info);
-            return encrypt(jsonStr);
-        }
-
-
-        private byte[] encrypt(string text)
-        {
-            var textBytes = Encoding.UTF8.GetBytes(text);
-
-            using Aes aes = Aes.Create();
+            var aes = Aes.Create();
             aes.Mode = CipherMode.CBC;
             aes.Key = this.key;
             aes.IV = this.iv;
             aes.Padding = PaddingMode.PKCS7;
+            return aes;
+        }
 
-            using var outStream = new MemoryStream();
+
+        private byte[] MakeEncryptedInfo(string fileName="")
+        {
+            var info = new DataInfoJson()
+            {
+                Manufacturer = DeviceInfo.Manufacturer,
+                Model = DeviceInfo.Model,
+                FileName = fileName
+            };
+            var jsonStr = JsonSerializer.Serialize(info);
+            var outStream = new MemoryStream();
+            Encrypt(outStream, jsonStr);
+            return outStream.ToArray();
+        }
+
+
+        private void Encrypt(Stream outStream, Stream inStream, int bufLen=65536)
+        {
+            // var textBytes = Encoding.UTF8.GetBytes(text);
+            var buf = new byte[bufLen];
+
+            using var aes = MakeAES();
+
+            // using var outStream = new MemoryStream();
 
             {
                 using var cryptStream = new CryptoStream(
-                                            outStream,
-                                            aes.CreateEncryptor(),
-                                            CryptoStreamMode.Write);
+                                        outStream,
+                                        aes.CreateEncryptor(),
+                                        CryptoStreamMode.Write);
                 using var bWriter = new BinaryWriter(cryptStream);
-                bWriter.Write(textBytes);
+                var readCnt = 0;
+                do
+                {                   
+                    readCnt = inStream.Read(buf, 0, bufLen);
+                    bWriter.Write(buf, 0, readCnt);
+                }
+                while (readCnt > 0);
             }
-                
-            return outStream.ToArray();
+ 
+            // return outStream.ToArray();
+        }
+
+
+        private void Encrypt(Stream outStream, string text, int bufLen=0)
+        {
+            if (bufLen == 0) { bufLen = text.Length; }
+            var textBytes = Encoding.UTF8.GetBytes(text);
+            var inStream = new MemoryStream();
+            inStream.Write(textBytes, 0, textBytes.Length);
+            inStream.Seek(0, SeekOrigin.Begin);
+            Encrypt(outStream, inStream, bufLen);
         }
 
 
@@ -88,7 +116,7 @@ namespace WaveSynMobile.Utils
             this.socket.Send(passwordArr);
 
             // Send device info
-            this.SendJson(new DeviceInfoJson()
+            this.SendJson(new DataInfoJson()
             {
                 Manufacturer = DeviceInfo.Manufacturer,
                 Model = DeviceInfo.Model
@@ -98,14 +126,12 @@ namespace WaveSynMobile.Utils
 
         public void SendText(string text)
         {
-            /*
-            var textJson = new TextJson();
-            textJson.Data = text;
-            var jsonBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize<TextJson>(textJson));
-            this.SendBytes(jsonBytes);
-            */
             var encryptedInfo = MakeEncryptedInfo();
-            var encryptedText = encrypt(text);
+
+            var memStream = new MemoryStream();
+            Encrypt(memStream, text);
+            var encryptedText = memStream.ToArray();
+
             var headObj = new Utils.DataHead()
             {
                 Password = (uint)this.password,
@@ -121,6 +147,30 @@ namespace WaveSynMobile.Utils
             this.socket.Send(encryptedInfo);
             // Send data
             this.socket.Send(encryptedText);
+        }
+
+
+        public void SendStream(Stream stream, string fileName = "")
+        {
+            var encryptedInfo = MakeEncryptedInfo(fileName);
+            var encryptedDataLen = (long)Math.Ceiling(stream.Length/16.0) * 16;
+            var headObj = new Utils.DataHead()
+            {
+                Password = (uint)this.password,
+                InfoLen = (UInt64)encryptedInfo.Length,
+                DataLen = (UInt64)encryptedDataLen
+            };
+
+            // Send exit flag
+            this.socket.Send(new byte[1]);
+            // Send head
+            SendJson(headObj);
+            // Send info
+            this.socket.Send(encryptedInfo);
+            // Send stream
+            // using var aes = MakeAES();
+            using var socketStream = new NetworkStream(this.socket);
+            Encrypt(outStream: socketStream, inStream: stream);
         }
 
 

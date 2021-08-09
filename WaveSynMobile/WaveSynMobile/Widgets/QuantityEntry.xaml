@@ -10,7 +10,7 @@
                        TextChanged="OnQuantityValueEntryChanged" 
                        Keyboard="Numeric"
                        HorizontalOptions="FillAndExpand"/>
-                <Picker HorizontalOptions="Fill"/>
+                <Picker x:Name="quantityUnitPicker" />
                 <Button Text=">"/>
             </StackLayout>
         </StackLayout>

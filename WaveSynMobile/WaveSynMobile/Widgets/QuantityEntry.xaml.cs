@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using WaveSynMobile.Utils;
+
 namespace WaveSynMobile.Widgets
 {
     
@@ -54,23 +56,48 @@ namespace WaveSynMobile.Widgets
             set => SetValue(QuantityUnitPickerWidthProperty, value);
         } 
 
-        public static readonly BindableProperty QuantityValueProperty = BindableProperty.Create(
-            nameof(QuantityValue),
+        public static readonly BindableProperty QuantityNumberProperty = BindableProperty.Create(
+            nameof(QuantityNumber),
             typeof(double),
             typeof(QuantityEntry),
             default(double),
             BindingMode.TwoWay);
 
-        public double QuantityValue
+        public double QuantityNumber
         {
-            get => (double)GetValue(QuantityValueProperty);
-            set => SetValue(QuantityValueProperty, value);
+            get => (double)GetValue(QuantityNumberProperty);
+            set => SetValue(QuantityNumberProperty, value);
         }
 
-        private void OnQuantityValueEntryChanged(object sender, TextChangedEventArgs e)
+        private void OnQuantityNumberEntryChanged(object sender, TextChangedEventArgs e)
         {
-            Console.WriteLine(e.NewTextValue);
-            QuantityValue = Convert.ToDouble(e.NewTextValue);
+            if (e.NewTextValue == "")
+            {
+                QuantityNumber = 0.0;
+            }
+            else
+            {
+                QuantityNumber = Convert.ToDouble(e.NewTextValue);
+            }
+        }
+
+        private string _oldUnit = "";
+
+        private void OnQuantityUnitPickerChanged(object sender, EventArgs e)
+        {
+            var newUnit = (string)quantityUnitPicker.SelectedItem;
+
+            if (_oldUnit == "")
+            {
+                _oldUnit = newUnit;
+                return;
+            }
+
+            if (QuantityNumber != 0.0) 
+            {
+                QuantityNumber *= PhysicalQuantities.Units[_oldUnit] / PhysicalQuantities.Units[newUnit];
+            }
+            _oldUnit = newUnit;
         }
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -81,20 +108,34 @@ namespace WaveSynMobile.Widgets
             {
                 quantityNameLabel.Text = QuantityName;
             }
-            else if (propertyName == QuantityValueProperty.PropertyName)
+            else if (propertyName == QuantityNumberProperty.PropertyName)
             {
-                quantityValueEntry.Text = QuantityValue.ToString();
+                quantityNumberEntry.Text = QuantityNumber.ToString();
             }
             else if (propertyName == QuantityTypeProperty.PropertyName)
             {
                 switch (QuantityType.ToLower())
                 {
                     case "frequency":
-                        quantityUnitPicker.Items.Add("Hz");
-                        quantityUnitPicker.Items.Add("kHz");
-                        quantityUnitPicker.Items.Add("MHz");
-                        quantityUnitPicker.Items.Add("GHz");
-                        quantityUnitPicker.SelectedIndex = 0;
+                        foreach (var unit in new List<string> { "Hz", "kHz", "MHz", "GHz"}) 
+                        {
+                            quantityUnitPicker.Items.Add(unit);
+                        }
+                        quantityUnitPicker.SelectedItem = "Hz";
+                        break;
+                    case "length":
+                        foreach (var unit in new List<string> { "nm", "μm", "mm", "cm", "dm", "m", "km" })
+                        {
+                            quantityUnitPicker.Items.Add(unit);
+                        }
+                        quantityUnitPicker.SelectedItem = "m";
+                        break;
+                    case "time":
+                        foreach (var unit in new List<string> { "ns", "μs", "ms", "s" })
+                        {
+                            quantityUnitPicker.Items.Add(unit);
+                        }
+                        quantityUnitPicker.SelectedItem = "s";
                         break;
                 }
             }
@@ -103,6 +144,11 @@ namespace WaveSynMobile.Widgets
                 quantityUnitPicker.WidthRequest = QuantityUnitPickerWidth;
             }
             
+        }
+
+        public string QuantityUnit
+        {
+            get => (string)quantityUnitPicker.SelectedItem;
         }
 
         public QuantityEntry()

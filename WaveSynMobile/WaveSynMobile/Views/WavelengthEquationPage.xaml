@@ -6,9 +6,17 @@
              Title="λfT Equation">
     <ContentPage.Content>
         <StackLayout>
+            <widgets:QuantityEntry
+                QuantityType="Length"
+                QuantityName="Wavelength"
+                QuantityUnitPickerWidth="45"/>
             <widgets:QuantityEntry 
                 QuantityType="Frequency"
-                QuantityName="Wavelength:"
+                QuantityName="Frequency"
+                QuantityUnitPickerWidth="45"/>
+            <widgets:QuantityEntry
+                QuantityType="Time"
+                QuantityName="Period"
                 QuantityUnitPickerWidth="45"/>
         </StackLayout>
     </ContentPage.Content>

@@ -20,6 +20,7 @@
             </Label.FormattedText>
         </Label>
         <Button Text="Scan" Clicked="OnScanClicked"/>
+        <Button Text="Equations" Clicked="OnEquationsClicked"/>
         <Button Text="Parse" Clicked="Button_Clicked"/>
         <Label x:Name="FileNameLabel" Text=""/>
     </StackLayout>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WaveSynMobile.Widgets.QuantityEntry">
+  <ContentView.Content>
+      <StackLayout>
+          <Label x:Name="quantityNameLabel" />
+            <StackLayout Orientation="Horizontal">
+                <Entry x:Name="quantityValueEntry" 
+                       TextChanged="OnQuantityValueEntryChanged" 
+                       Keyboard="Numeric"
+                       HorizontalOptions="FillAndExpand"/>
+                <Picker HorizontalOptions="Fill"/>
+                <Button Text=">"/>
+            </StackLayout>
+        </StackLayout>
+  </ContentView.Content>
+</ContentView>

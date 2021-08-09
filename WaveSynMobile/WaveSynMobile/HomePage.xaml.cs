@@ -23,6 +23,12 @@ namespace WaveSynMobile
             await this.Navigation.PushAsync(scanPage);
         }
 
+        async private void OnEquationsClicked(object sender, EventArgs e)
+        {
+            var equationsPage = new Views.EquationSelectPage();
+            await this.Navigation.PushAsync(equationsPage);
+        }
+
         
         //async private void Button_Clicked(object sender, EventArgs e)
         private async void Button_Clicked(object sender, EventArgs e)

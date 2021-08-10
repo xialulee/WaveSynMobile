@@ -34,10 +34,10 @@ namespace WaveSynMobile.ViewModels {
             set => SetProperty(ref periodNumber, value);
         }
 
-        public void Solve(string varName) {
+        public void Solve(string wrt) {
             double? λ, f, T;
             λ = f = T = null;
-            switch (varName.ToLower()) {
+            switch (wrt.ToLower()) {
                 case "wavelength":
                     λ = WavelengthNumber;
                     break;

@@ -2,20 +2,34 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:widgets="clr-namespace:WaveSynMobile.Widgets"
-             x:Class="WaveSynMobile.Views.RangeResolutionEquationPage">
+             xmlns:viewModels="clr-namespace:WaveSynMobile.ViewModels"
+             x:Class="WaveSynMobile.Views.RangeResolutionEquationPage"
+             Title="Range Resolution Equation">
+    <ContentPage.BindingContext>
+        <viewModels:RangeResolutionEquationViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
             <widgets:QuantityEntry
                 QuantityType="Length"
                 QuantityName="Range Resolution"
+                QuantityNumber="{Binding RangeResolutionNumber}"
+                QuantityUnit="{Binding RangeResolutionUnit}"
+                InputFinished="OnRangeResolutionInputFinished"
                 QuantityUnitPickerWidth="45"/>
             <widgets:QuantityEntry
                 QuantityType="Frequency"
                 QuantityName="Bandwidth"
+                QuantityNumber="{Binding BandwidthNumber}"
+                QuantityUnit="{Binding BandwidthUnit}"
+                InputFinished="OnBandwidthInputFinished"
                 QuantityUnitPickerWidth="45"/>
             <widgets:QuantityEntry
                 QuantityType="Time"
                 QuantityName="Chipwidth"
+                QuantityNumber="{Binding ChipwidthNumber}"
+                QuantityUnit="{Binding ChipwidthUnit}"
+                InputFinished="OnChipwidthInputFinished"
                 QuantityUnitPickerWidth="45"/>
         </StackLayout>
     </ContentPage.Content>

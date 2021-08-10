@@ -17,22 +17,22 @@ namespace WaveSynMobile.Views {
         }
 
         async private void OnWavelengthInputFinished(object sender, EventArgs e) {
-            await Solve("wavelength", (QuantityEntry)sender);
+            await Solve((QuantityEntry)sender, wrt:"wavelength");
         }
 
         async private void OnFrequencyInputFinished(object sender, EventArgs e) {
-            await Solve("frequency", (QuantityEntry)sender);
+            await Solve((QuantityEntry)sender, wrt:"frequency");
         }
         
         async private void OnPeriodInputFinished(object sender, EventArgs e) {
-            await Solve("period", (QuantityEntry)sender);
+            await Solve((QuantityEntry)sender, wrt:"period");
         }
 
-        async private Task Solve(string varName, QuantityEntry widget) {
+        async private Task Solve(QuantityEntry widget, string wrt) {
             if (widget.QuantityValid && widget.QuantityNumber>0.0) {
-                ((WavelengthEquationViewModel)BindingContext).Solve(varName);
+                ((WavelengthEquationViewModel)BindingContext).Solve(wrt);
             } else {
-                await DisplayAlert("Alert", $"The inputed {varName} is invalid.", "OK");
+                await DisplayAlert("Alert", $"The inputed {wrt} is invalid.", "OK");
             }
         }
     }

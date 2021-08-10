@@ -13,7 +13,7 @@
                        HorizontalOptions="FillAndExpand"/>
                 <Picker x:Name="quantityUnitPicker" 
                         SelectedIndexChanged="OnQuantityUnitPickerChanged"/>
-                <Button Text="✔️"/>
+                <Button Text="✔️" Clicked="OnOkButtonClicked"/>
             </StackLayout>
         </StackLayout>
   </ContentView.Content>

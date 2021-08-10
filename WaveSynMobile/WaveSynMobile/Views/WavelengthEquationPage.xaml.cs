@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using WaveSynMobile.ViewModels;
 
 namespace WaveSynMobile.Views
 {
@@ -15,6 +16,10 @@ namespace WaveSynMobile.Views
         public WavelengthEquationPage()
         {
             InitializeComponent();
+        }
+
+        public void OnWavelengthInputFinished(object sender, EventArgs e) {
+            ((WavelengthEquationViewModel)BindingContext).Solve("wavelength");
         }
     }
 }

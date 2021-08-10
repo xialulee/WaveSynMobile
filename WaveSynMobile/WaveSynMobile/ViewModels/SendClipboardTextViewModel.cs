@@ -14,36 +14,10 @@ namespace WaveSynMobile.ViewModels
 {
     class SendClipboardTextViewModel : BaseSendViewModel
     {
-        /*
-        private string ip;
-        private int port;
-        private int password;
-        private byte[] key;
-        private byte[] iv;
-
-        private string statusHTML;
-        public string StatusHTML
-        {
-            get => this.statusHTML;
-            set => this.SetProperty(ref this.statusHTML, value);
-        }
-
-        public SendClipboardTextViewModel(string ip, int port, int password, byte[] key, byte[] iv)
-        {
-            this.ip = ip;
-            this.port = port;
-            this.password = password;
-            this.key = key;
-            this.iv = iv;
-        }
-        */
-
 
         public SendClipboardTextViewModel(string ip, int port, int password, byte[] key, byte[] iv) : base(ip, port, password, key, iv)
         {
         }
-
-
 
         async public void Communicate()
         {

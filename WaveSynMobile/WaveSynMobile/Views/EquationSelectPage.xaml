@@ -5,7 +5,12 @@
              Title="Equations">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="λfT Eq" Clicked="OnWavelengthEqClicked"/>
+            <Button 
+                Text="λfT Eq" 
+                Clicked="OnWavelengthEqClicked"/>
+            <Button 
+                Text="Range Resolution Eq"
+                Clicked="OnRangeResolutionEqClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

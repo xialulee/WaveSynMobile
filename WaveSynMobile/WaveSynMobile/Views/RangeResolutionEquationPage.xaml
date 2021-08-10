@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:widgets="clr-namespace:WaveSynMobile.Widgets"
+             x:Class="WaveSynMobile.Views.RangeResolutionEquationPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <widgets:QuantityEntry
+                QuantityType="Length"
+                QuantityName="Range Resolution"
+                QuantityUnitPickerWidth="45"/>
+            <widgets:QuantityEntry
+                QuantityType="Frequency"
+                QuantityName="Bandwidth"
+                QuantityUnitPickerWidth="45"/>
+            <widgets:QuantityEntry
+                QuantityType="Time"
+                QuantityName="Chipwidth"
+                QuantityUnitPickerWidth="45"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

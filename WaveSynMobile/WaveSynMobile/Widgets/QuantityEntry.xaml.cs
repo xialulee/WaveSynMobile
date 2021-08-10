@@ -34,6 +34,18 @@ namespace WaveSynMobile.Widgets {
             set => SetValue(QuantityTypeProperty, value);
         }
 
+        public static readonly BindableProperty QuantityValidProperty = BindableProperty.Create(
+            nameof(QuantityValid),
+            typeof(bool),
+            typeof(QuantityEntry),
+            default(bool),
+            BindingMode.OneWayToSource);
+
+        public bool QuantityValid {
+            get => (bool)GetValue(QuantityValidProperty);
+            set => SetValue(QuantityValidProperty, value);
+        }
+
         public static readonly BindableProperty QuantityNameProperty = BindableProperty.Create(
             nameof(QuantityName), 
             typeof(string), 
@@ -66,17 +78,18 @@ namespace WaveSynMobile.Widgets {
             default(double),
             BindingMode.TwoWay);
 
-        public double QuantityNumber
-        {
+        public double QuantityNumber {
             get => (double)GetValue(QuantityNumberProperty);
             set => SetValue(QuantityNumberProperty, value);
         }
 
         private void OnQuantityNumberEntryChanged(object sender, TextChangedEventArgs e) {
-            if (e.NewTextValue == "") {
-                QuantityNumber = 0.0;
-            } else {
+            try {
                 QuantityNumber = Convert.ToDouble(e.NewTextValue);
+                QuantityValid = true;
+            } catch (FormatException) {
+                QuantityNumber = 0.0;
+                QuantityValid = false;
             }
         }
 

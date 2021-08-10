@@ -22,12 +22,14 @@
                 QuantityName="Frequency"
                 QuantityNumber="{Binding FrequencyNumber}"
                 QuantityUnit="{Binding FrequencyUnit}"
+                InputFinished="OnFrequencyInputFinished"
                 QuantityUnitPickerWidth="45"/>
             <widgets:QuantityEntry
                 QuantityType="Time"
                 QuantityName="Period"
                 QuantityNumber="{Binding PeriodNumber}"
                 QuantityUnit="{Binding PeriodUnit}"
+                InputFinished="OnPeriodInputFinished"
                 QuantityUnitPickerWidth="45"/>
         </StackLayout>
     </ContentPage.Content>

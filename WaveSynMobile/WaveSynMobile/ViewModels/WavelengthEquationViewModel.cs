@@ -20,22 +20,23 @@ namespace WaveSynMobile.ViewModels {
         protected double? periodNumber;
         
         public double WavelengthNumber {
-            get => wavelengthNumber ?? -1; // Maybe NaN?
+            get => wavelengthNumber ?? 0.0; 
             set => SetProperty(ref wavelengthNumber, value);
         }
 
         public double FrequencyNumber {
-            get => frequencyNumber ?? -1; // Maybe NaN;
+            get => frequencyNumber ?? 0.0; 
             set => SetProperty(ref frequencyNumber, value);
         }
 
         public double PeriodNumber {
-            get => periodNumber ?? -1; // Maybe NaN;
+            get => periodNumber ?? 0.0; 
             set => SetProperty(ref periodNumber, value);
         }
 
         public void Solve(string varName) {
-            double? λ = null, f = null, T = null;
+            double? λ, f, T;
+            λ = f = T = null;
             switch (varName.ToLower()) {
                 case "wavelength":
                     λ = WavelengthNumber;
@@ -48,9 +49,9 @@ namespace WaveSynMobile.ViewModels {
                     break;
             }
             Equations.WavelengthEquation(ref λ, WavelengthUnit, ref f, FrequencyUnit, ref T, PeriodUnit);
-            WavelengthNumber = λ ?? -1;
-            FrequencyNumber = f ?? -1;
-            PeriodNumber = T ?? -1;
+            WavelengthNumber = λ ?? 0.0;
+            FrequencyNumber = f ?? 0.0;
+            PeriodNumber = T ?? 0.0;
         }
     }
 }

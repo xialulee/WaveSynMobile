@@ -5,6 +5,12 @@ using WaveSynMobile.Utils;
 
 namespace WaveSynMobile.ViewModels {
     class WavelengthEquationViewModel : BaseViewModel {
+        private RadarFrequencyBands _radarBands;
+
+        public WavelengthEquationViewModel() {
+            _radarBands = new RadarFrequencyBands();
+        }
+
         public string WavelengthUnit {
             get; set;
         }

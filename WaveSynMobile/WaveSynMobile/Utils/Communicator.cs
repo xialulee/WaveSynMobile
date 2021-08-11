@@ -9,10 +9,8 @@ using System.Security.Cryptography;
 
 using Xamarin.Essentials;
 
-namespace WaveSynMobile.Utils
-{
-    class Communicator : IDisposable
-    {
+namespace WaveSynMobile.Utils {
+    class Communicator : IDisposable {
         private readonly string ip;
         private readonly int port;
         private readonly int password;
@@ -21,9 +19,7 @@ namespace WaveSynMobile.Utils
         private readonly Socket socket;
         private readonly IPEndPoint ipe;
 
-
-        public Communicator(string ip, int port, int password, byte[] key, byte[] iv) 
-        {
+        public Communicator(string ip, int port, int password, byte[] key, byte[] iv) {
             this.ip = ip;
             this.port = port;
             this.password = password;
@@ -33,15 +29,11 @@ namespace WaveSynMobile.Utils
             this.socket = new Socket(this.ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         }
 
-
-        public void Connect()
-        {
+        public void Connect() {
             this.socket.Connect(this.ipe);
         }
 
-
-        private Aes MakeAES()
-        {
+        private Aes MakeAES() {
             var aes = Aes.Create();
             aes.Mode = CipherMode.CBC;
             aes.Key = this.key;
@@ -50,11 +42,8 @@ namespace WaveSynMobile.Utils
             return aes;
         }
 
-
-        private byte[] MakeEncryptedInfo(string fileName="")
-        {
-            var info = new DataInfoJson()
-            {
+        private byte[] MakeEncryptedInfo(string fileName="") {
+            var info = new DataInfoJson() {
                 Manufacturer = DeviceInfo.Manufacturer,
                 Model = DeviceInfo.Model,
                 FileName = fileName
@@ -65,9 +54,7 @@ namespace WaveSynMobile.Utils
             return outStream.ToArray();
         }
 
-
-        private void Encrypt(Stream outStream, Stream inStream, int bufLen=65536)
-        {
+        private void Encrypt(Stream outStream, Stream inStream, int bufLen=65536) {
             var buf = new byte[bufLen];
 
             using var aes = MakeAES();
@@ -78,17 +65,13 @@ namespace WaveSynMobile.Utils
             using var bWriter = new BinaryWriter(cryptStream);
 
             int readCnt;
-            do
-            {                   
+            do {                   
                 readCnt = inStream.Read(buf, 0, bufLen);
                 bWriter.Write(buf, 0, readCnt);
-            }
-            while (readCnt > 0);
+            } while (readCnt > 0);
         }
 
-
-        private void Encrypt(Stream outStream, string text, int bufLen=0)
-        {
+        private void Encrypt(Stream outStream, string text, int bufLen=0) {
             if (bufLen == 0) { bufLen = text.Length; }
             var textBytes = Encoding.UTF8.GetBytes(text);
             var inStream = new MemoryStream();
@@ -97,9 +80,7 @@ namespace WaveSynMobile.Utils
             Encrypt(outStream, inStream, bufLen);
         }
 
-
-        public void SendHead()
-        {
+        public void SendHead() {
             var passwordArr = this.Int32ToBytes(this.password);
 
             // Send exit flag
@@ -109,24 +90,18 @@ namespace WaveSynMobile.Utils
             this.socket.Send(passwordArr);
 
             // Send device info
-            this.SendJson(new DataInfoJson()
-            {
+            this.SendJson(new DataInfoJson() {
                 Manufacturer = DeviceInfo.Manufacturer,
                 Model = DeviceInfo.Model
             });
         }
 
-
-        public void SendText(string text)
-        {
+        public void SendText(string text) {
             var encryptedInfo = MakeEncryptedInfo();
-
             var memStream = new MemoryStream();
             Encrypt(memStream, text);
             var encryptedText = memStream.ToArray();
-
-            var headObj = new Utils.DataHead()
-            {
+            var headObj = new Utils.DataHead() {
                 Password = (uint)this.password,
                 InfoLen = (UInt64)encryptedInfo.Length,
                 DataLen = (UInt64)encryptedText.Length
@@ -143,12 +118,10 @@ namespace WaveSynMobile.Utils
         }
 
 
-        public void SendStream(Stream stream, string fileName = "")
-        {
+        public void SendStream(Stream stream, string fileName = "") {
             var encryptedInfo = MakeEncryptedInfo(fileName);
             var encryptedDataLen = (long)Math.Ceiling(stream.Length/16.0) * 16;
-            var headObj = new Utils.DataHead()
-            {
+            var headObj = new Utils.DataHead() {
                 Password = (uint)this.password,
                 InfoLen = (UInt64)encryptedInfo.Length,
                 DataLen = (UInt64)encryptedDataLen
@@ -165,34 +138,25 @@ namespace WaveSynMobile.Utils
             Encrypt(outStream: socketStream, inStream: stream);
         }
 
-
-        public void SendJson<T>(T obj)
-        {
+        public void SendJson<T>(T obj) {
             var jsonStr = JsonSerializer.Serialize<T>(obj);
             var jsonUTF8 = Encoding.UTF8.GetBytes(jsonStr);
             this.SendBytes(jsonUTF8);
         }
 
-
-        private void SendBytes(byte[] byteArr)
-        {
+        private void SendBytes(byte[] byteArr) {
             var length = byteArr.Length;
             this.socket.Send(this.Int32ToBytes(length));
             this.socket.Send(byteArr);
         }
 
-
-        public void Dispose()
-        {
+        public void Dispose() {
             this.socket?.Dispose();
         }
 
-
-        private byte[] Int32ToBytes(Int32 integer)
-        {
+        private byte[] Int32ToBytes(Int32 integer) {
             var retval = new byte[4];
-            for (int i = 0; i < 4; ++i)
-            {
+            for (int i = 0; i < 4; ++i) {
                 var shift = 8 * (3 - i);
                 retval[i] = (byte)((integer & (0xff << shift)) >> shift);
             }

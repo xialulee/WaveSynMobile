@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace WaveSynMobile.ViewModels {
-    class BaseViewModel : INotifyPropertyChanged
-    {
+    class BaseViewModel : INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected bool SetProperty<T>(
@@ -13,8 +12,9 @@ namespace WaveSynMobile.ViewModels {
                 T value,
                 [CallerMemberName] string propertyName = "",
                 Action onChanged = null) {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
+            if (EqualityComparer<T>.Default.Equals(backingStore, value)) {
                 return false;
+            }
 
             backingStore = value;
             onChanged?.Invoke();
@@ -22,8 +22,7 @@ namespace WaveSynMobile.ViewModels {
             return true;
         }
 
-        private void OnPropertyChanged(string propertyName)
-        {
+        private void OnPropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(
                 sender: this, 
                 e:      new PropertyChangedEventArgs(propertyName));

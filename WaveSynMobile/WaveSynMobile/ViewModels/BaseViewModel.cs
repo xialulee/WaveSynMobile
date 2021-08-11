@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 
-namespace WaveSynMobile.ViewModels
-{
+namespace WaveSynMobile.ViewModels {
     class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected bool SetProperty<T>(
-            ref T backingStore, 
-            T value,
-            [CallerMemberName] string propertyName = "",
-            Action onChanged = null)
-        {
+                ref T backingStore, 
+                T value,
+                [CallerMemberName] string propertyName = "",
+                Action onChanged = null) {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
@@ -27,11 +24,9 @@ namespace WaveSynMobile.ViewModels
 
         private void OnPropertyChanged(string propertyName)
         {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(
+                sender: this, 
+                e:      new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -24,6 +24,7 @@ namespace WaveSynMobile.ViewModels {
         protected double? wavelengthNumber;
         protected double? frequencyNumber;
         protected double? periodNumber;
+        protected string frequencyBandName;
         
         public double WavelengthNumber {
             get => wavelengthNumber ?? 0.0; 
@@ -38,6 +39,11 @@ namespace WaveSynMobile.ViewModels {
         public double PeriodNumber {
             get => periodNumber ?? 0.0; 
             set => SetProperty(ref periodNumber, value);
+        }
+
+        public string FrequencyBandName {
+            get => frequencyBandName;
+            set => SetProperty(ref frequencyBandName, value);
         }
 
         public void Solve(string wrt) {
@@ -58,6 +64,7 @@ namespace WaveSynMobile.ViewModels {
             WavelengthNumber = λ ?? 0.0;
             FrequencyNumber = f ?? 0.0;
             PeriodNumber = T ?? 0.0;
+            FrequencyBandName = _radarBands.GetName(FrequencyNumber, FrequencyUnit);
         }
     }
 }

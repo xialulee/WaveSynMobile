@@ -12,25 +12,26 @@
         <StackLayout>
             <widgets:QuantityEntry
                 QuantityType="Length"
-                QuantityName="Wavelength"
+                QuantityName="Wavelength:"
                 QuantityNumber="{Binding WavelengthNumber}"
                 QuantityUnit="{Binding WavelengthUnit}"
                 InputFinished="OnWavelengthInputFinished"
                 QuantityUnitPickerWidth="45"/>
             <widgets:QuantityEntry 
                 QuantityType="Frequency"
-                QuantityName="Frequency"
+                QuantityName="Frequency:"
                 QuantityNumber="{Binding FrequencyNumber}"
                 QuantityUnit="{Binding FrequencyUnit}"
                 InputFinished="OnFrequencyInputFinished"
                 QuantityUnitPickerWidth="45"/>
             <widgets:QuantityEntry
                 QuantityType="Time"
-                QuantityName="Period"
+                QuantityName="Period:"
                 QuantityNumber="{Binding PeriodNumber}"
                 QuantityUnit="{Binding PeriodUnit}"
                 InputFinished="OnPeriodInputFinished"
                 QuantityUnitPickerWidth="45"/>
+            <Label Text="{Binding FrequencyBandName, StringFormat='Frequency band: {0}'}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

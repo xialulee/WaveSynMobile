@@ -28,8 +28,7 @@ namespace WaveSynMobile.Widgets {
             default(string),
             BindingMode.OneWay);
 
-        public string QuantityType
-        {
+        public string QuantityType {
             get => (string)GetValue(QuantityTypeProperty);
             set => SetValue(QuantityTypeProperty, value);
         }
@@ -53,8 +52,7 @@ namespace WaveSynMobile.Widgets {
             default(string), 
             BindingMode.OneWay);
         
-        public string QuantityName
-        {
+        public string QuantityName {
             get => (string)GetValue(QuantityNameProperty);
             set => SetValue(QuantityNameProperty, value);
         }
@@ -107,41 +105,32 @@ namespace WaveSynMobile.Widgets {
 
         private string _oldUnit = "";
 
-        private void OnQuantityUnitPickerChanged(object sender, EventArgs e)
-        {
+        private void OnQuantityUnitPickerChanged(object sender, EventArgs e) {
             var newUnit = (string)quantityUnitPicker.SelectedItem;
             QuantityUnit = newUnit;
 
-            if (_oldUnit == "")
-            {
+            if (_oldUnit == "") {
                 _oldUnit = newUnit;
                 return;
             }
 
-            if (QuantityNumber != 0.0) 
-            {
+            if (QuantityNumber != 0.0) {
                 QuantityNumber *= PhysicalQuantities.Units[_oldUnit] / PhysicalQuantities.Units[newUnit];
             }
             _oldUnit = newUnit;
         }
 
-        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             base.OnPropertyChanged(propertyName);
 
-            if (propertyName == QuantityNameProperty.PropertyName)
-            {
+            if (propertyName == QuantityNameProperty.PropertyName) {
                 quantityNameLabel.Text = QuantityName;
-            }
-            else if (propertyName == QuantityNumberProperty.PropertyName)
-            {
+            } else if (propertyName == QuantityNumberProperty.PropertyName) {
                 quantityNumberEntry.Text = QuantityNumber.ToString();
             } else if (propertyName == QuantityTypeProperty.PropertyName) {
-                switch (QuantityType.ToLower())
-                {
+                switch (QuantityType.ToLower()) {
                     case "frequency":
-                        foreach (var unit in new List<string> { "Hz", "kHz", "MHz", "GHz"}) 
-                        {
+                        foreach (var unit in new List<string> { "Hz", "kHz", "MHz", "GHz"}) {
                             quantityUnitPicker.Items.Add(unit);
                         }
                         quantityUnitPicker.SelectedItem = "Hz";

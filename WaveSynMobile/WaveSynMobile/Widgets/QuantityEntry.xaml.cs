@@ -130,19 +130,19 @@ namespace WaveSynMobile.Widgets {
             } else if (propertyName == QuantityTypeProperty.PropertyName) {
                 switch (QuantityType.ToLower()) {
                     case "frequency":
-                        foreach (var unit in new List<string> { "Hz", "kHz", "MHz", "GHz"}) {
+                        foreach (var unit in PhysicalQuantities.UnitsOfFrequency.Keys) {
                             quantityUnitPicker.Items.Add(unit);
                         }
                         quantityUnitPicker.SelectedItem = "Hz";
                         break;
                     case "length":
-                        foreach (var unit in new List<string> { "nm", "μm", "mm", "cm", "dm", "m", "km" }) {
+                        foreach (var unit in PhysicalQuantities.UnitsOfLength.Keys) {
                             quantityUnitPicker.Items.Add(unit);
                         }
                         quantityUnitPicker.SelectedItem = "m";
                         break;
                     case "time":
-                        foreach (var unit in new List<string> { "ns", "μs", "ms", "s" }) {
+                        foreach (var unit in PhysicalQuantities.UnitsOfTime.Keys) {
                             quantityUnitPicker.Items.Add(unit);
                         }
                         quantityUnitPicker.SelectedItem = "s";

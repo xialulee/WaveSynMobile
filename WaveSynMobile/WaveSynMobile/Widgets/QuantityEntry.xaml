@@ -6,6 +6,9 @@
       <StackLayout>
           <Label x:Name="quantityNameLabel" />
             <StackLayout Orientation="Horizontal">
+                <Button Text="❌"
+                        WidthRequest="50"
+                        Clicked="OnClearButtonClicked"/>
                 <Entry x:Name="quantityNumberEntry" 
                        HorizontalTextAlignment="End"
                        TextChanged="OnQuantityNumberEntryChanged" 
@@ -13,7 +16,9 @@
                        HorizontalOptions="FillAndExpand"/>
                 <Picker x:Name="quantityUnitPicker" 
                         SelectedIndexChanged="OnQuantityUnitPickerChanged"/>
-                <Button Text="✔️" Clicked="OnOkButtonClicked"/>
+                <Button Text="✔️" 
+                        WidthRequest="50"
+                        Clicked="OnOkButtonClicked"/>
             </StackLayout>
         </StackLayout>
   </ContentView.Content>

@@ -21,6 +21,10 @@ namespace WaveSynMobile.Widgets {
             InputFinished?.Invoke(this, e);
         }
 
+        public void OnClearButtonClicked(object sender, EventArgs e) {
+            quantityNumberEntry.Text = "";
+        }
+
         public static readonly BindableProperty QuantityTypeProperty = BindableProperty.Create(
             nameof(QuantityType),
             typeof(string),

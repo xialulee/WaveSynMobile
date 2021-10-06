@@ -151,6 +151,12 @@ namespace WaveSynMobile.Widgets {
                         }
                         quantityUnitPicker.SelectedItem = "s";
                         break;
+                    case "angle":
+                        foreach (var unit in PhysicalQuantities.UnitsOfAngle.Keys) {
+                            quantityUnitPicker.Items.Add(unit);
+                        }
+                        quantityUnitPicker.SelectedItem = "°";
+                        break;
                 }
             } else if (propertyName == QuantityUnitPickerWidthProperty.PropertyName) {
                 quantityUnitPicker.WidthRequest = QuantityUnitPickerWidth;

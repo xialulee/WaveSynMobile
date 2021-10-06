@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:widgets="clr-namespace:WaveSynMobile.Widgets"
+             x:Class="WaveSynMobile.Views.ULABeamwidthEquationPage"
+             Title="ULA Beamwidth Equation">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label
+                Text="Arguments:"
+                TextColor="Black"
+                FontSize="Medium"/>
+            <widgets:QuantityEntry
+                QuantityType="Length"
+                QuantityName="Wavelength"
+                QuantityUnitPickerWidth="45"/>
+            <widgets:QuantityEntry
+                QuantityType="Angle"
+                QuantityName="Beam direction"
+                QuantityUnitPickerWidth="45"/>
+
+
+            <Label
+                Text="Equation Variables:"
+                TextColor="Black"
+                FontSize="Medium"/>
+            <widgets:QuantityEntry
+                QuantityType="Length"
+                QuantityName="Aperture size"
+                QuantityUnitPickerWidth="45"/>
+            <widgets:QuantityEntry
+                QuantityType="Angle"
+                QuantityName="Beamwidth"
+                QuantityUnitPickerWidth="45"/>
+
+            <Label
+                Text="Tools:"
+                TextColor="Black"
+                FontSize="Medium"/>
+            <Button
+                Text="Wavelength Calculator"
+                Clicked="OnWavelengthCalculatorClicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

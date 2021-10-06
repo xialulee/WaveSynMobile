@@ -11,6 +11,9 @@
             <Button 
                 Text="Range Resolution Eq"
                 Clicked="OnRangeResolutionEqClicked"/>
+            <Button
+                Text="ULA Beamwidth Eq"
+                Clicked="OnULABeamwidthEqClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

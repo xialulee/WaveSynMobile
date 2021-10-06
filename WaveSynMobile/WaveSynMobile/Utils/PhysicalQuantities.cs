@@ -28,6 +28,11 @@ namespace WaveSynMobile.Utils {
             { "s", 1.0}
         };
 
+        public static readonly Dictionary<string, double> UnitsOfAngle = new Dictionary<string, double> {
+            { "°", Math.PI/180.0 },
+            { "rad", 1.0 }
+        };
+
         public static readonly Dictionary<string, double> Units;
 
         static PhysicalQuantities() {

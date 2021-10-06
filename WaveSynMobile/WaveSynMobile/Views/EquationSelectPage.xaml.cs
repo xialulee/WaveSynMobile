@@ -23,5 +23,10 @@ namespace WaveSynMobile.Views {
             var rangeResolutionEqPage = new Views.RangeResolutionEquationPage();
             await Navigation.PushAsync(rangeResolutionEqPage);
         }
+
+        async private void OnULABeamwidthEqClicked(object sender, EventArgs e) {
+            var ulaBeamwidthEqPage = new Views.ULABeamwidthEquationPage();
+            await Navigation.PushAsync(ulaBeamwidthEqPage);
+        }
     }
 }

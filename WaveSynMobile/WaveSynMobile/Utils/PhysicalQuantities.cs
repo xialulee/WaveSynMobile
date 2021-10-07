@@ -30,7 +30,8 @@ namespace WaveSynMobile.Utils {
 
         public static readonly Dictionary<string, double> UnitsOfAngle = new Dictionary<string, double> {
             { "°", Math.PI/180.0 },
-            { "rad", 1.0 }
+            { "rad", 1.0 },
+            { "grad", Math.PI/200.0 }
         };
 
         public static readonly Dictionary<string, double> Units;
@@ -40,6 +41,7 @@ namespace WaveSynMobile.Utils {
             Units = UnitsOfLength
                 .Concat(UnitsOfFrequency)
                 .Concat(UnitsOfTime)
+                .Concat(UnitsOfAngle)
                 .ToDictionary(x => x.Key, x => x.Value);
         }
     }

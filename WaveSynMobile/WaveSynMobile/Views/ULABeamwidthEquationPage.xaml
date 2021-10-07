@@ -2,8 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:widgets="clr-namespace:WaveSynMobile.Widgets"
+             xmlns:viewModels="clr-namespace:WaveSynMobile.ViewModels"
              x:Class="WaveSynMobile.Views.ULABeamwidthEquationPage"
              Title="ULA Beamwidth Equation">
+    <ContentPage.BindingContext>
+        <viewModels:ULABeamwidthEquationViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
             <Label
@@ -13,10 +17,14 @@
             <widgets:QuantityEntry
                 QuantityType="Length"
                 QuantityName="Wavelength"
+                QuantityNumber="{Binding WavelengthNumber}"
+                QuantityUnit="{Binding WavelengthUnit}"
                 QuantityUnitPickerWidth="45"/>
             <widgets:QuantityEntry
                 QuantityType="Angle"
                 QuantityName="Beam direction"
+                QuantityNumber="{Binding DirectionNumber}"
+                QuantityUnit="{Binding DirectionUnit}"
                 QuantityUnitPickerWidth="45"/>
 
 
@@ -27,10 +35,16 @@
             <widgets:QuantityEntry
                 QuantityType="Length"
                 QuantityName="Aperture size"
+                QuantityNumber="{Binding ApertureSizeNumber}"
+                QuantityUnit="{Binding ApertureSizeUnit}"
+                InputFinished="OnApertureSizeInputFinished"
                 QuantityUnitPickerWidth="45"/>
             <widgets:QuantityEntry
                 QuantityType="Angle"
                 QuantityName="Beamwidth"
+                QuantityNumber="{Binding BeamwidthNumber}"
+                QuantityUnit="{Binding BeamwidthUnit}"
+                InputFinished="OnBeamwidthInputFinished"
                 QuantityUnitPickerWidth="45"/>
 
             <Label

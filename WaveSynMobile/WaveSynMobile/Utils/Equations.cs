@@ -47,5 +47,30 @@ namespace WaveSynMobile.Utils {
             }
             RangeResolutionEquation(ref rangeResolutionNumber, rangeResolutionUnit, ref bandwidthNumber, bandwidthUnit, ref chipwidthNumber, chipwidthUnit);
         }
+
+        public static void ULABeamwidthEquation(
+                in double wavelengthNumber, in string wavelengthUnit, 
+                in double directionNumber, in string directionUnit,
+                ref double? apertureSizeNumber, in string apertureSizeUnit,
+                ref double? beamwidthNumber, in string beamwidthUnit) {
+            var k = 0.886; // 3dB width. Maybe add an option for 4dB width (k=1)
+            var units = PhysicalQuantities.Units;
+            var λ = wavelengthNumber * units[wavelengthUnit];
+            var θ0 = directionNumber * units[directionUnit];
+
+            if (apertureSizeNumber is double aNum) {
+                var a = aNum * units[apertureSizeUnit];
+                var θBW = k * λ / (a * Math.Cos(θ0));
+                beamwidthNumber = θBW / units[beamwidthUnit];
+                return;
+            }
+
+            if (beamwidthNumber is double θBWNum) {
+                var θBW = θBWNum * units[beamwidthUnit];
+                var a = k * λ / (θBW*Math.Cos(θ0));
+                apertureSizeNumber = a / units[apertureSizeUnit];
+                return;
+            }
+        }
     }
 }

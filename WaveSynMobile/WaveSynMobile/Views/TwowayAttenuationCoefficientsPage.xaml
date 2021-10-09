@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:widgets="clr-namespace:WaveSynMobile.Widgets"
+             x:Class="WaveSynMobile.Views.TwowayAttenuationCoefficientsPage"
+             Title="Attenuation Coefficients (Twoway)">
+    <ContentPage.Content>
+        <StackLayout>
+            <widgets:QuantityEntry
+                QuantityType="Frequency"
+                QuantityName="Frequency"
+                QuantityUnitPickerWidth="45" />
+            <Entry 
+                IsReadOnly="true"
+                HorizontalTextAlignment="End"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

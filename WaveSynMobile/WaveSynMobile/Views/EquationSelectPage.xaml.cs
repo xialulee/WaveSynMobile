@@ -28,5 +28,10 @@ namespace WaveSynMobile.Views {
             var ulaBeamwidthEqPage = new Views.ULABeamwidthEquationPage();
             await Navigation.PushAsync(ulaBeamwidthEqPage);
         }
+
+        async private void OnTwowayAttenuationCoefficientsClicked(object sender, EventArgs e) {
+            var twowayAttenuationCoefficientsPage = new Views.TwowayAttenuationCoefficientsPage();
+            await Navigation.PushAsync(twowayAttenuationCoefficientsPage);
+        }
     }
 }

@@ -14,6 +14,9 @@
             <Button
                 Text="ULA Beamwidth Eq"
                 Clicked="OnULABeamwidthEqClicked"/>
+            <Button
+                Text="Attenuation Coefficients (Twoway)"
+                Clicked="OnTwowayAttenuationCoefficientsClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

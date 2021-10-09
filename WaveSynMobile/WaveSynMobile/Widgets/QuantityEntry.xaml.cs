@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 
 using WaveSynMobile.Utils;
 
-namespace WaveSynMobile.Widgets { 
+namespace WaveSynMobile.Widgets {
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class QuantityEntry : ContentView {
@@ -50,12 +50,12 @@ namespace WaveSynMobile.Widgets {
         }
 
         public static readonly BindableProperty QuantityNameProperty = BindableProperty.Create(
-            nameof(QuantityName), 
-            typeof(string), 
-            typeof(QuantityEntry), 
-            default(string), 
+            nameof(QuantityName),
+            typeof(string),
+            typeof(QuantityEntry),
+            default(string),
             BindingMode.OneWay);
-        
+
         public string QuantityName {
             get => (string)GetValue(QuantityNameProperty);
             set => SetValue(QuantityNameProperty, value);
@@ -71,6 +71,30 @@ namespace WaveSynMobile.Widgets {
         public double QuantityUnitPickerWidth {
             get => (double)GetValue(QuantityUnitPickerWidthProperty);
             set => SetValue(QuantityUnitPickerWidthProperty, value);
+        }
+
+        public static readonly BindableProperty IsOkButtonVisibleProperty = BindableProperty.Create(
+            nameof(IsOkButtonVisible),
+            typeof(bool),
+            typeof(QuantityEntry),
+            true,
+            BindingMode.OneWay);
+
+        public bool IsOkButtonVisible {
+            get => (bool) GetValue(IsOkButtonVisibleProperty);
+            set => SetValue(IsOkButtonVisibleProperty, value);
+        }
+
+        public static readonly BindableProperty IsClearButtonVisibleProperty = BindableProperty.Create(
+            nameof(IsClearButtonVisible),
+            typeof(bool),
+            typeof(QuantityEntry),
+            true,
+            BindingMode.OneWay);
+
+        public bool IsClearButtonVisible {
+            get => (bool) GetValue(IsClearButtonVisibleProperty);
+            set => SetValue(IsClearButtonVisibleProperty, value);
         }
 
         public static readonly BindableProperty QuantityNumberProperty = BindableProperty.Create(

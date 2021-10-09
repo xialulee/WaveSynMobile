@@ -34,10 +34,23 @@ namespace WaveSynMobile.Utils {
         public double LinearInterp(double frequencyNumber, string frequencyUnit) {
             var units = PhysicalQuantities.UnitsOfFrequency;
             double freqInGHz = frequencyNumber * units[frequencyUnit] / units["GHz"];
-            if (freqInGHz > 400) {
+            if (freqInGHz < 0.1 || freqInGHz > 400) {
                 return double.NaN;
             }
-            return 0.0; // To do
+
+            for (int idx = 0; idx < _coeffList.Count() - 1; ++idx) {
+                var record0 = _coeffList[idx];
+                var record1 = _coeffList[idx + 1];
+                var x0 = record0.FreqInGHz;
+                var x1 = record1.FreqInGHz;
+                var y0 = record0.Coefficient;
+                var y1 = record1.Coefficient;
+                if (x0 <= freqInGHz && freqInGHz <= x1) {
+                    return (y1 - y0) / (x1 - x0) * (freqInGHz - x0) + y0;
+                }
+            }
+
+            return double.NaN;
         }
     }
 }

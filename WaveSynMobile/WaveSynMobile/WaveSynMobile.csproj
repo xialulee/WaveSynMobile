@@ -13,10 +13,12 @@
 
   <ItemGroup>
     <None Remove="Resources\radarfrequencybands.csv" />
+    <None Remove="Resources\twowayattenuationcoefficients.csv" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\radarfrequencybands.csv" />
+    <EmbeddedResource Include="Resources\twowayattenuationcoefficients.csv" />
   </ItemGroup>
 
   <ItemGroup>

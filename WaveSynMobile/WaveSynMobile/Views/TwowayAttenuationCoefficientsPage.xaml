@@ -2,15 +2,23 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:widgets="clr-namespace:WaveSynMobile.Widgets"
+             xmlns:viewModels="clr-namespace:WaveSynMobile.ViewModels"
              x:Class="WaveSynMobile.Views.TwowayAttenuationCoefficientsPage"
              Title="Attenuation Coefficients (Twoway)">
+    <ContentPage.BindingContext>
+        <viewModels:TwowayAttenuationCoefficientsViewModel/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
             <widgets:QuantityEntry
                 QuantityType="Frequency"
                 QuantityName="Frequency"
+                QuantityNumber="{Binding FrequencyNumber}"
+                QuantityUnit="{Binding FrequencyUnit}"
+                InputFinished="OnFrequencyInputFinished"
                 QuantityUnitPickerWidth="45" />
             <Entry 
+                Text="{Binding Coefficient, StringFormat='{0} dB/km'}"
                 IsReadOnly="true"
                 HorizontalTextAlignment="End"/>
         </StackLayout>

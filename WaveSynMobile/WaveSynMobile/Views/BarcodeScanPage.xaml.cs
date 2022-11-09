@@ -33,7 +33,7 @@ namespace WaveSynMobile.Views
 
                     switch (barcode.Command.Action, barcode.Command.Source) {
                         case ("read", "clipboard"):
-                            SendClipboardTexttPage sendClipboardTextPage = new SendClipboardTexttPage(barcode);
+                            SendClipboardTextPage sendClipboardTextPage = new SendClipboardTextPage(barcode);
                             await Navigation.PushAsync(sendClipboardTextPage);
                             Navigation.RemovePage(this);
                             break;

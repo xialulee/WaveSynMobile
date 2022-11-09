@@ -12,44 +12,35 @@ using Xamarin.Forms.Xaml;
 namespace WaveSynMobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BarcodeScanPage : ContentPage
-    {
+    public partial class BarcodeScanPage : ContentPage {
         private bool Scanning = true;
 
-        public BarcodeScanPage()
-        {
+        public BarcodeScanPage() {
             InitializeComponent();
         }
 
-        private void ZXingScannerView_OnScanResult(ZXing.Result result)
-        {
-            if (Scanning)
-            {
-                
-                Device.BeginInvokeOnMainThread(async () =>
-                {
+        private void ZXingScannerView_OnScanResult(ZXing.Result result) {
+            if (Scanning) {
+
+                Device.BeginInvokeOnMainThread(async () => {
                     Utils.WaveSynBarcode barcode;
-                    try
-                    {
+                    try {
                         barcode = JsonSerializer.Deserialize<Utils.WaveSynBarcode>(result.Text);
-                    }
-                    catch (JsonException ex) 
-                    {
+                    } catch (JsonException) {
                         return;
                     }
                     Scanning = false;
 
-                    switch (barcode.Command.Action, barcode.Command.Source)
-                    {
+                    switch (barcode.Command.Action, barcode.Command.Source) {
                         case ("read", "clipboard"):
-                            var sendClipboardTextPage = new Views.SendClipboardTexttPage(barcode);
-                            await this.Navigation.PushAsync(sendClipboardTextPage);
-                            this.Navigation.RemovePage(this);
+                            SendClipboardTexttPage sendClipboardTextPage = new SendClipboardTexttPage(barcode);
+                            await Navigation.PushAsync(sendClipboardTextPage);
+                            Navigation.RemovePage(this);
                             break;
                         case ("read", "storage"):
-                            var sendFilePage = new Views.SendFilePage(barcode);
-                            await this.Navigation.PushAsync(sendFilePage);
-                            this.Navigation.RemovePage(this);
+                            var sendFilePage = new SendFilePage(barcode);
+                            await Navigation.PushAsync(sendFilePage);
+                            Navigation.RemovePage(this);
                             break;
                     }
                 });

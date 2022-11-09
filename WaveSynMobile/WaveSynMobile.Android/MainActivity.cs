@@ -7,6 +7,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Xamarin.Forms;
+using WaveSynMobile.Services;
+using WaveSynMobile.Droid.Services;
 
 namespace WaveSynMobile.Droid
 {
@@ -28,6 +31,8 @@ namespace WaveSynMobile.Droid
             var app = new App();
             LoadApplication(app);
 
+            DependencyService.Register<IStorage, AndroidStorage>();
+
             if (Intent.Action == Intent.ActionSend)
             {
                 var uri = Intent.GetParcelableExtra(Intent.ExtraStream) as Android.Net.Uri;
@@ -45,6 +50,15 @@ namespace WaveSynMobile.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data) {
+            if (requestCode == 1000) {
+                if (data != null) {
+                    var uri = Android.Net.Uri.Parse(data.DataString);
+                }
+            }
+            base.OnActivityResult(requestCode, resultCode, data);
         }
     }
 }

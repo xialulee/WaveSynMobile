@@ -22,6 +22,7 @@
         <Button Text="Scan" Clicked="OnScanClicked"/>
         <Button Text="Equations" Clicked="OnEquationsClicked"/>
         <Button Text="Parse" Clicked="Button_Clicked"/>
+        <Button Text="Test" Clicked="OnTestClicked"/>
         <Label x:Name="FileNameLabel" Text=""/>
     </StackLayout>
 

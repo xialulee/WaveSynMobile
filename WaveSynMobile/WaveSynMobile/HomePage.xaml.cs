@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using WaveSynMobile.Services;
 
 namespace WaveSynMobile {
     public partial class HomePage : ContentPage {
@@ -44,6 +45,10 @@ namespace WaveSynMobile {
             } catch (Exception) {
                 // The user canceled or something went wrong
             }
+        }
+
+        private void OnTestClicked(object sender, EventArgs e) {
+            DependencyService.Get<IStorage>().SaveAs("a.pdf");
         }
     }
 }

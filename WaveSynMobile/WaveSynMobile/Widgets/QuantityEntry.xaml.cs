@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -181,11 +177,13 @@ namespace WaveSynMobile.Widgets {
                         }
                         quantityUnitPicker.SelectedItem = "°";
                         break;
+                    default:
+                        break;
                 }
             } else if (propertyName == QuantityUnitPickerWidthProperty.PropertyName) {
                 quantityUnitPicker.WidthRequest = QuantityUnitPickerWidth;
             }
-            
+
         }
 
         public QuantityEntry() {

@@ -14,23 +14,23 @@ namespace WaveSynMobile.Views {
             InitializeComponent();
         }
 
-        async private void OnWavelengthEqClicked(object sender, EventArgs e) {
-            var wavelengthEqPage = new Views.WavelengthEquationPage();
-            await this.Navigation.PushAsync(wavelengthEqPage);
+        private async void OnWavelengthEqClicked(object sender, EventArgs e) {
+            var wavelengthEqPage = new WavelengthEquationPage();
+            await Navigation.PushAsync(wavelengthEqPage);
         }
 
-        async private void OnRangeResolutionEqClicked(object sender, EventArgs e) {
-            var rangeResolutionEqPage = new Views.RangeResolutionEquationPage();
+        private async void OnRangeResolutionEqClicked(object sender, EventArgs e) {
+            var rangeResolutionEqPage = new RangeResolutionEquationPage();
             await Navigation.PushAsync(rangeResolutionEqPage);
         }
 
-        async private void OnULABeamwidthEqClicked(object sender, EventArgs e) {
-            var ulaBeamwidthEqPage = new Views.ULABeamwidthEquationPage();
+        private async void OnULABeamwidthEqClicked(object sender, EventArgs e) {
+            var ulaBeamwidthEqPage = new ULABeamwidthEquationPage();
             await Navigation.PushAsync(ulaBeamwidthEqPage);
         }
 
-        async private void OnTwowayAttenuationCoefficientsClicked(object sender, EventArgs e) {
-            var twowayAttenuationCoefficientsPage = new Views.TwowayAttenuationCoefficientsPage();
+        private async void OnTwowayAttenuationCoefficientsClicked(object sender, EventArgs e) {
+            var twowayAttenuationCoefficientsPage = new TwowayAttenuationCoefficientsPage();
             await Navigation.PushAsync(twowayAttenuationCoefficientsPage);
         }
     }

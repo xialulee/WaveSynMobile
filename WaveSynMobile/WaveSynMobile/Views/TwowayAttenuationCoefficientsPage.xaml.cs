@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -16,11 +13,11 @@ namespace WaveSynMobile.Views {
             InitializeComponent();
         }
 
-        async private void OnFrequencyInputFinished(object sender, EventArgs e) {
+        private async void OnFrequencyInputFinished(object sender, EventArgs e) {
             await Solve();
         }
 
-        async private Task Solve() {
+        private async Task Solve() {
             var context = (TwowayAttenuationCoefficientsViewModel)BindingContext;
             context.Solve();
             if (context.Coefficient == double.NaN) {

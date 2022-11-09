@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -17,21 +14,21 @@ namespace WaveSynMobile.Views {
             InitializeComponent();
         }
 
-        async private void OnWavelengthCalculatorClicked(object sender, EventArgs e) {
+        private async void OnWavelengthCalculatorClicked(object sender, EventArgs e) {
             var wavelengthEqPage = new WavelengthEquationPage();
             await Navigation.PushAsync(wavelengthEqPage);
         }
 
-        async private void OnApertureSizeInputFinished(object sender, EventArgs e) {
+        private async void OnApertureSizeInputFinished(object sender, EventArgs e) {
             await Solve((QuantityEntry)sender, wrt: "aperture size");
         }
 
 
-        async private void OnBeamwidthInputFinished(object sender, EventArgs e) {
+        private async void OnBeamwidthInputFinished(object sender, EventArgs e) {
             await Solve((QuantityEntry)sender, wrt: "beamwidth");
         }
 
-        async private Task Solve(QuantityEntry widget, string wrt) {
+        private async Task Solve(QuantityEntry widget, string wrt) {
             if (widget.QuantityValid && widget.QuantityNumber > 0.0) {
                 ((ULABeamwidthEquationViewModel)BindingContext).Solve(wrt);
             } else {

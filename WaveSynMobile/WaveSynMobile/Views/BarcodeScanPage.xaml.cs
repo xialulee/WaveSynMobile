@@ -42,6 +42,8 @@ namespace WaveSynMobile.Views
                             await Navigation.PushAsync(sendFilePage);
                             Navigation.RemovePage(this);
                             break;
+                        default:
+                            break;
                     }
                 });
             }

@@ -8,7 +8,7 @@ namespace WaveSynMobile.ViewModels {
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected bool SetProperty<T>(
-                ref T backingStore, 
+                ref T backingStore,
                 T value,
                 [CallerMemberName] string propertyName = "",
                 Action onChanged = null) {
@@ -24,8 +24,8 @@ namespace WaveSynMobile.ViewModels {
 
         private void OnPropertyChanged(string propertyName) {
             PropertyChanged?.Invoke(
-                sender: this, 
-                e:      new PropertyChangedEventArgs(propertyName));
+                sender: this,
+                e: new PropertyChangedEventArgs(propertyName));
         }
     }
 }

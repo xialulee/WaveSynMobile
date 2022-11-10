@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace WaveSynMobile.Services {
     public interface IStorage {
-        void SaveAs(string fileName);
+        Task<Stream> AskSaveAsStream(string fileName);
     }
 }

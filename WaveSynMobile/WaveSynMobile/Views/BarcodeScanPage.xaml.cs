@@ -42,6 +42,11 @@ namespace WaveSynMobile.Views
                             await Navigation.PushAsync(sendFilePage);
                             Navigation.RemovePage(this);
                             break;
+                        case ("write", ""):
+                            var recvClipboardTextPage = new RecvClipboardTextPage(barcode);
+                            await Navigation.PushAsync(recvClipboardTextPage);
+                            Navigation.RemovePage(this);
+                            break;
                         default:
                             break;
                     }

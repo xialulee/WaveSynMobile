@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
 using WaveSynMobile.Services;
+using System.IO;
 
 namespace WaveSynMobile {
     public partial class HomePage : ContentPage {
@@ -47,8 +48,10 @@ namespace WaveSynMobile {
             }
         }
 
-        private void OnTestClicked(object sender, EventArgs e) {
-            DependencyService.Get<IStorage>().SaveAs("a.pdf");
+        private async void OnTestClicked(object sender, EventArgs e) {
+            Stream stream = await DependencyService.Get<IStorage>().AskSaveAsStream("a.txt");
+            stream.Close();
+            // using (await stream = DependencyService.Get<IStorage>().AskSaveAsStream("a.txt")) ;
         }
     }
 }

@@ -80,23 +80,6 @@ namespace WaveSynMobile.Utils {
             Crypt(outStream, inStream, true, bufLen);
         }
 
-        /*
-        private void Decrypt(Stream outStream, Stream inStream, int bufLen=65536) {
-            var buf = new byte[bufLen];
-            using var aes = MakeAES();
-            using var cryptStream = new CryptoStream(
-                outStream,
-                aes.CreateDecryptor(),
-                CryptoStreamMode.Write );
-            using var bWriter = new BinaryWriter(cryptStream);
-            int readCnt;
-            do {
-                readCnt = inStream.Read(buf, 0, bufLen);
-                bWriter.Write(buf, 0, readCnt);
-            } while (readCnt > 0);
-        }
-        */
-
         private string Decrypt(Stream inStream) {
             inStream.Seek(0, SeekOrigin.Begin);
             var outStream = new MemoryStream();
@@ -152,7 +135,6 @@ namespace WaveSynMobile.Utils {
             socket.Send(new byte[1] { 0 });
             SendJson(headObj);
             socket.Send(encryptedInfo);
-            //using var netStream = new NetworkStream(socket);
             var buffer = new byte[65536];
             var inStream = new MemoryStream();
             int bytesRead;

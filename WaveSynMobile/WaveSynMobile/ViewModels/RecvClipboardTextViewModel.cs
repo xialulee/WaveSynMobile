@@ -22,7 +22,7 @@ namespace WaveSynMobile.ViewModels {
         }
 
         public async void Communicate() {
-            using Communicator communicator = new Communicator(ip, port, password, key, iv);
+            using Communicator communicator = new Communicator(ip, port, password, key);
 
             bool success = true;
 

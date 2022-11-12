@@ -10,7 +10,7 @@ namespace WaveSynMobile.ViewModels {
         }
 
         public async void Communicate() {
-            using Communicator communicator = new Communicator(ip, port, password, key, iv);
+            using Communicator communicator = new Communicator(ip, port, password, key);
 
             if (!Clipboard.HasText) {
                 StatusHTML = "<p style=\"color:red\">Clipboard does not have text.</p>";

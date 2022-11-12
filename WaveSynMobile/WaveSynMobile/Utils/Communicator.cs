@@ -14,19 +14,15 @@ namespace WaveSynMobile.Utils {
         private readonly int port;
         private readonly int password;
         private readonly byte[] key;
-        private readonly byte[] iv;
         private readonly Socket socket;
         private readonly IPEndPoint ipe;
         private Aes aes;
-        private ICryptoTransform encryptor = null;
-        private ICryptoTransform decryptor = null;
 
-        public Communicator(string ip, int port, int password, byte[] key, byte[] iv) {
+        public Communicator(string ip, int port, int password, byte[] key) {
             this.ip = ip;
             this.port = port;
             this.password = password;
             this.key = key;
-            this.iv = iv;
             MakeAES();
             ipe = new IPEndPoint(IPAddress.Parse(ip), port);
             socket = new Socket(this.ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -40,7 +36,6 @@ namespace WaveSynMobile.Utils {
             aes = Aes.Create();
             aes.Mode = CipherMode.CBC;
             aes.Key = key;
-            aes.IV = iv;
             aes.Padding = PaddingMode.PKCS7;
         }
 
@@ -56,26 +51,15 @@ namespace WaveSynMobile.Utils {
             return outStream.ToArray();
         }
 
-        private void Crypt(Stream outStream, Stream inStream, bool encrypt=true, int bufLen=65536) {
+        private void Crypt(Stream outStream, Stream inStream, bool encrypt=true, int bufLen=65536, bool updateIV=true) {
             var buf = new byte[bufLen];
+            if (encrypt && updateIV) aes.GenerateIV();
             ICryptoTransform transform;
-
-            if (encrypt) {
-                if (encryptor == null) {
-                    encryptor = aes.CreateEncryptor();
-                }
-                transform = encryptor;
-            } else {
-                if (decryptor == null) {
-                    decryptor = aes.CreateDecryptor();
-                }
-                transform = decryptor;
-            }
-
+            transform = encrypt ? aes.CreateEncryptor() : aes.CreateDecryptor();
             using var cryptStream = new CryptoStream(
-                                    outStream,
-                                    transform,
-                                    CryptoStreamMode.Write);
+                outStream,
+                transform,
+                CryptoStreamMode.Write);
             using var bWriter = new BinaryWriter(cryptStream);
 
             int readCnt;
@@ -85,58 +69,50 @@ namespace WaveSynMobile.Utils {
             } while (readCnt > 0);
         }
 
-        private void Encrypt(Stream outStream, string text, int bufLen = 0) {
-            if (bufLen == 0) { bufLen = text.Length; }
-            var textBytes = Encoding.UTF8.GetBytes(text);
+        private void Encrypt(Stream outStream, string inText, int bufLen = 0) {
+            if (bufLen == 0) bufLen = inText.Length; 
+            var textBytes = Encoding.UTF8.GetBytes(inText);
             var inStream = new MemoryStream();
-            inStream.Write(textBytes, 0, textBytes.Length);
+            inStream.Write(textBytes, offset: 0, count: textBytes.Length);
             inStream.Seek(0, SeekOrigin.Begin);
-            Crypt(outStream, inStream, true, bufLen);
+            Crypt(outStream, inStream, encrypt: true, bufLen: bufLen);
         }
 
         private string Decrypt(Stream inStream) {
-            inStream.Seek(0, SeekOrigin.Begin);
             var outStream = new MemoryStream();
-            Crypt(outStream, inStream, false);
+            Crypt(outStream, inStream, encrypt: false);
             var textBytes = outStream.ToArray();
             return Encoding.UTF8.GetString(textBytes);
         }
 
-        public void SendHead() {
-            var passwordArr = Int32ToBytes(password);
+        public void SendHead(long encryptedDataLen, string fileName = "") {
+            var encryptedInfo = MakeEncryptedInfo(fileName: fileName);
+            var ivInfo = aes.IV;
 
-            // Send exit flag
-            socket.Send(new byte[1]);
-
-            // Send password
-            socket.Send(passwordArr);
-
-            // Send device info
-            SendJson(new DataInfoJson() {
-                Manufacturer = DeviceInfo.Manufacturer,
-                Model = DeviceInfo.Model
-            });
-        }
-
-        public void SendText(string text) {
-            var encryptedInfo = MakeEncryptedInfo();
-            var memStream = new MemoryStream();
-            Encrypt(memStream, text);
-            var encryptedText = memStream.ToArray();
             var headObj = new Utils.DataHead() {
-                Password = (uint)this.password,
+                Password = (uint)password,
                 InfoLen = (UInt64)encryptedInfo.Length,
-                DataLen = (UInt64)encryptedText.Length
+                DataLen = (UInt64)encryptedDataLen
             };
 
             // Send exit flag
-            this.socket.Send(new byte[1]);
-            // Send head
+            socket.Send(new byte[1]);
+            // Send head in cleartext. 
             SendJson(headObj);
             // Send info
-            this.socket.Send(encryptedInfo);
-            // Send data
-            this.socket.Send(encryptedText);
+            socket.Send(ivInfo);
+            socket.Send(encryptedInfo);
+        }
+
+        public void SendText(string text) {
+            var memStream = new MemoryStream();
+            Encrypt(memStream, text);
+            byte[] ivText = aes.IV;
+            byte[] encryptedText = memStream.ToArray();
+
+            SendHead(encryptedText.Length);
+            socket.Send(ivText);
+            socket.Send(encryptedText);
         }
 
         public string RecvText() {
@@ -160,29 +136,18 @@ namespace WaveSynMobile.Utils {
         }
 
         public void SendStream(Stream stream, string fileName = "") {
-            var encryptedInfo = MakeEncryptedInfo(fileName);
             var encryptedDataLen = (long)Math.Ceiling(stream.Length/16.0) * 16;
-            var headObj = new DataHead() {
-                Password = (uint)this.password,
-                InfoLen = (UInt64)encryptedInfo.Length,
-                DataLen = (UInt64)encryptedDataLen
-            };
-
-            // Send exit flag
-            this.socket.Send(new byte[1]);
-            // Send head
-            SendJson(headObj);
-            // Send info
-            this.socket.Send(encryptedInfo);
-            // Send stream
-            using var socketStream = new NetworkStream(this.socket);
-            Crypt(outStream: socketStream, inStream: stream);
+            SendHead(encryptedDataLen, fileName: fileName);
+            aes.GenerateIV();
+            socket.Send(aes.IV);
+            using var socketStream = new NetworkStream(socket);
+            Crypt(outStream: socketStream, inStream: stream, updateIV: false);
         }
 
         public void SendJson<T>(T obj) {
             var jsonStr = JsonSerializer.Serialize<T>(obj);
             var jsonUTF8 = Encoding.UTF8.GetBytes(jsonStr);
-            this.SendBytes(jsonUTF8);
+            SendBytes(jsonUTF8);
         }
 
         private void SendBytes(byte[] byteArr) {
@@ -192,13 +157,13 @@ namespace WaveSynMobile.Utils {
         }
 
         public void Dispose() {
-            this.socket?.Dispose();
+            socket?.Dispose();
         }
 
         private byte[] Int32ToBytes(Int32 integer) {
             var retval = new byte[4];
             for (int i = 0; i < 4; ++i) {
-                var shift = 8 * (3 - i);
+                int shift = 8 * (3 - i);
                 retval[i] = (byte)((integer & (0xff << shift)) >> shift);
             }
             return retval;

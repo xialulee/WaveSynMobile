@@ -16,7 +16,7 @@ namespace WaveSynMobile.ViewModels
 
         async public void Communicate()
         {
-            using var communicator = new Communicator(this.ip, this.port, this.password, this.key, this.iv);
+            using var communicator = new Communicator(this.ip, this.port, this.password, this.key);
 
             var picked = await FilePicker.PickAsync();
             var fileName = picked.FileName;
